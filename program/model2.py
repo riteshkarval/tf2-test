@@ -14,6 +14,9 @@ out_path = '/opt/dkube/output/'
 filename = 'featureset.parquet'
 batch_size = 32
 
+steps_per_epoch = int(60000/32)
+epochs = 5
+
 def read_idx(dataset = "training", path = "../data"):
     # Fucntion to convert ubyte files to numpy arrays
     if dataset == "training":
@@ -91,11 +94,13 @@ ckpt = tf.train.Checkpoint(
 manager = tf.train.CheckpointManager(ckpt, os.path.join(out_path, 'run-1'), max_to_keep=3)
 ckpt.restore(manager.latest_checkpoint)
 
-for _ in range(50):
+steps = steps_per_epoch * epochs
+
+for _ in range(steps):
     example = next(iterator)
     loss = train_step(model, example, opt)
     ckpt.step.assign_add(1)
-    if int(ckpt.step) % 10 == 0:
+    if int(ckpt.step) % 100 == 0:
         save_path = manager.save()
         print("Saved checkpoint for step {}: {}".format(int(ckpt.step), save_path))
         print("loss {:1.2f}".format(loss.numpy()))
