@@ -97,10 +97,12 @@ train_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='train_accuracy
 test_loss = tf.keras.metrics.Mean(name='test_loss')
 test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
+iterator = iter(train_ds)
+
 ckpt = tf.train.Checkpoint(
-    step=tf.Variable(1), optimizer=optimizer, net=model
+    step=tf.Variable(1), optimizer=optimizer, net=model, iterator=iterator
 )
-manager = tf.train.CheckpointManager(ckpt, os.path.join(out_path, 'run-1'), max_to_keep=10)
+manager = tf.train.CheckpointManager(ckpt, os.path.join(out_path, 'run-1'), max_to_keep=3)
 
 ckpt.restore(manager.latest_checkpoint)
 
