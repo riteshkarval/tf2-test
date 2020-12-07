@@ -102,6 +102,8 @@ ckpt = tf.train.Checkpoint(
 )
 manager = tf.train.CheckpointManager(ckpt, os.path.join(out_path, 'run-1'), max_to_keep=10)
 
+ckpt.restore(manager.latest_checkpoint)
+
 EPOCHS = 1
 
 for epoch in range(EPOCHS):
