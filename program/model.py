@@ -100,7 +100,7 @@ test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 ckpt = tf.train.Checkpoint(
     step=tf.Variable(1), optimizer=optimizer, net=model, iterator=train_ds
 )
-manager = tf.train.CheckpointManager(ckpt, out_path, max_to_keep=3)
+manager = tf.train.CheckpointManager(ckpt, os.path.join(out_path, 'run-1'), max_to_keep=10)
 
 EPOCHS = 1
 
