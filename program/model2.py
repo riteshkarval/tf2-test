@@ -104,3 +104,5 @@ for _ in range(steps):
         save_path = manager.save()
         print("Saved checkpoint for step {}: {}".format(int(ckpt.step), save_path))
         print("loss {:1.2f}".format(loss.numpy()))
+        
+model.save(out_path)
